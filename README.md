@@ -3,6 +3,14 @@
 
 > **A Python Tool for Network Packet Viewing & Downloading And For Monitoring Network Traffic**
 
+# Libraries
+
+This Project Uses
+
+**PySide6**: https://pypi.org/project/PySide6/
+
+---
+
 # Installation
 
 ### Requirements
@@ -12,6 +20,7 @@ At Least **Python 3** or higher
 ---
 
 > **Note**: Run Theses In Project's Root Dir
+
 First Begin By Installing Required Libs By:
 ```bash
 pip install -r requirements.txt
