@@ -3,6 +3,8 @@
 
 > **A Python Tool for Network Packet Viewing & Downloading And For Monitoring Network Traffic**
 
+**Warning**: Currently, this project works only on Windows 8 or later
+
 # Libraries
 
 This Project Uses
@@ -10,6 +12,8 @@ This Project Uses
 **PySide6**: https://pypi.org/project/PySide6/
 
 **psutil**: https://pypi.org/project/psutil/
+
+**pyinstaller**: https://pypi.org/project/pyinstaller/
 
 ---
 
@@ -21,14 +25,31 @@ At Least **Python 3** or higher
 
 ---
 
-> **Note**: Run Theses In Project's Root Dir
+> **Note**: Run Theses commands In Project's Root Dir
 
 First Begin By Installing Required Libs By:
 ```bash
 pip install -r requirements.txt
 ```
-After Run Program by:
+
+## Installing From Zip
+
+Download the latest Zip from the **Releases** section
+
+1. Extract the ZIP file
+
+2. Open the extracted `NetNinja` folder
+
+3. Run `NetNinja.exe`
+
+## Compiling From Source
+
 ```bash
-python3 Main.py
+pyinstaller --clean --noconsole --onefile --name NetNinja --icon "icons\icon.ico" --add-data "interface.ui;." --add-data "icons;icons" main.py
 ```
-And Thats It...
+
+The compiled executable will be located at:
+
+```text
+dist\NetNinja.exe
+```

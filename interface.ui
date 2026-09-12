@@ -89,23 +89,20 @@
     </property>
    </widget>
    <widget class="QLabel" name="label">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>10</y>
-      <width>71</width>
-      <height>71</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="pixmap">
-     <pixmap>icons/icon.png</pixmap>
-    </property>
-    <property name="scaledContents">
-     <bool>true</bool>
-    </property>
+ 	<property name="geometry">
+  	<rect>
+   		<x>10</x>
+   		<y>10</y>
+   		<width>61</width>
+   		<height>61</height>
+  	</rect>
+ 	</property>
+ 	<property name="text">
+ 		<string/>
+ 	</property>
+ 	<property name="scaledContents">
+  		<bool>true</bool>
+ 	</property>
    </widget>
    <widget class="QPushButton" name="StopMonitorButton">
     <property name="geometry">
@@ -132,7 +129,7 @@
     <property name="styleSheet">
      <string notr="true">QPushButton#StopMonitorButton {
     background-color: #2A2A2A;
-    color: red;
+    color: green;
     border: 1px solid #3A3A3A;
     border-radius: 5px;
     padding: 6px 12px;
@@ -155,9 +152,9 @@ QPushButton#StopMonitorButton:pressed {
     <property name="geometry">
      <rect>
       <x>190</x>
-      <y>110</y>
+      <y>160</y>
       <width>581</width>
-      <height>411</height>
+      <height>361</height>
      </rect>
     </property>
    </widget>
