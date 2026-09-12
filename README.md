@@ -8,6 +8,7 @@
 This Project Uses
 
 **PySide6**: https://pypi.org/project/PySide6/
+
 **psutil**: https://pypi.org/project/psutil/
 
 ---
