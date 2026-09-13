@@ -1,7 +1,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![PyPI](https://img.shields.io/pypi/v/markitdown.svg)](https://pypi.org/project/markitdown/)
 
-> **A Python Tool for Network Packet Viewing & Downloading And For Monitoring Network Traffic**
+> **A Python Tool For Monitoring Network Traffic**
 
 **Warning**: Currently, this project works only on Windows 8 or later
 
