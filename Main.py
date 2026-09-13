@@ -56,7 +56,7 @@ if not window:
 
 window.setWindowTitle("NetNinja")
 window.setWindowIcon(QIcon(ICON))
-
+window.setFixedSize(800, 520)
 
 # Title
 title = window.findChild(QLabel, "Title")
