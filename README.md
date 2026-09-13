@@ -27,11 +27,6 @@ At Least **Python 3** or higher
 
 > **Note**: Run Theses commands In Project's Root Dir
 
-First Begin By Installing Required Libs By:
-```bash
-pip install -r requirements.txt
-```
-
 ## Installing From Zip
 
 Download the latest Zip from the **Releases** section
@@ -42,7 +37,16 @@ Download the latest Zip from the **Releases** section
 
 3. Run `NetNinja.exe`
 
+---
+
 ## Compiling From Source
+
+First Begin By Installing Required Libs By:
+```bash
+pip install -r requirements.txt
+```
+
+Compile Command:
 
 ```bash
 pyinstaller --clean --noconsole --onefile --name NetNinja --icon "icons\icon.ico" --add-data "interface.ui;." --add-data "icons;icons" main.py
