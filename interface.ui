@@ -71,7 +71,7 @@
    <widget class="QLabel" name="Title">
     <property name="geometry">
      <rect>
-      <x>70</x>
+      <x>50</x>
       <y>30</y>
       <width>131</width>
       <height>31</height>
@@ -89,20 +89,20 @@
     </property>
    </widget>
    <widget class="QLabel" name="label">
- 	<property name="geometry">
-  	<rect>
-   		<x>10</x>
-   		<y>10</y>
-   		<width>61</width>
-   		<height>61</height>
-  	</rect>
- 	</property>
- 	<property name="text">
- 		<string/>
- 	</property>
- 	<property name="scaledContents">
-  		<bool>true</bool>
- 	</property>
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>61</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="scaledContents">
+     <bool>true</bool>
+    </property>
    </widget>
    <widget class="QPushButton" name="StopMonitorButton">
     <property name="geometry">
@@ -250,6 +250,50 @@ QPushButton#SearchButton:pressed {
     </property>
     <property name="text">
      <string>Search Processes</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="CreateLog">
+    <property name="geometry">
+     <rect>
+      <x>190</x>
+      <y>30</y>
+      <width>191</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Yu Gothic UI Semibold</family>
+      <pointsize>16</pointsize>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="cursor">
+     <cursorShape>ArrowCursor</cursorShape>
+    </property>
+    <property name="mouseTracking">
+     <bool>true</bool>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton#CreateLog {
+    background-color: #2A2A2A;
+    color: white;
+    border: 1px solid #3A3A3A;
+    border-radius: 5px;
+    padding: 6px 12px;
+}
+
+QPushButton#CreateLog:hover {
+    background-color: #3A3A3A;
+    border: 1px solid #555555;
+}
+
+QPushButton#CreateLog:pressed {
+    background-color: #222222;
+}</string>
+    </property>
+    <property name="text">
+     <string>Create Log</string>
     </property>
    </widget>
   </widget>

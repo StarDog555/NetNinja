@@ -8,6 +8,7 @@ BASE = getattr(sys, "_MEIPASS", os.path.dirname(os.path.abspath(__file__)))
 UI = os.path.join(BASE, "interface.ui")
 ICON = os.path.join(BASE, "icons", "icon.png")
 
+
 class Model(QAbstractTableModel):
     def __init__(self):
         super().__init__()
@@ -36,6 +37,7 @@ class Model(QAbstractTableModel):
         self.rows.append(row)
         self.endInsertRows()
 
+
 app = QApplication(sys.argv)
 
 loader = QUiLoader()
@@ -54,22 +56,26 @@ if not window:
 
 window.setWindowTitle("NetNinja")
 window.setWindowIcon(QIcon(ICON))
-window.setFixedSize(800, 550)
 
+
+# Title
 title = window.findChild(QLabel, "Title")
+
 if title:
     title.setGeometry(90, 25, 220, 41)
     title.setText("NETNINJA")
 
+
+# Icon
 icon_label = window.findChild(QLabel, "label")
+
 if icon_label:
     icon_label.setGeometry(5, 8, 75, 75)
     icon_label.setAlignment(Qt.AlignCenter)
+
     pixmap = QPixmap(ICON)
 
-    if pixmap.isNull():
-        print("Could not load icon:", ICON)
-    else:
+    if not pixmap.isNull():
         icon_label.setPixmap(
             pixmap.scaled(
                 75,
@@ -79,15 +85,20 @@ if icon_label:
             )
         )
 
+
+# Widgets
 PList = window.findChild(QListWidget, "PList")
 Packets = window.findChild(QTableView, "Packets")
 Search = window.findChild(QPushButton, "SearchButton")
 Stop = window.findChild(QPushButton, "StopMonitorButton")
+CreateLog = window.findChild(QPushButton, "CreateLog")
 
-if not all((PList, Packets, Search, Stop)):
+if not all((PList, Packets, Search, Stop, CreateLog)):
     print("Missing widget in interface.ui")
     sys.exit(1)
 
+
+# Packet Table
 model = Model()
 Packets.setModel(model)
 Packets.setAlternatingRowColors(True)
@@ -100,6 +111,8 @@ column_widths = [80, 150, 70, 80, 180, 180, 70, 70]
 for i, width in enumerate(column_widths):
     Packets.setColumnWidth(i, width)
 
+
+# Processes
 hidden = {
     "System", "System Idle Process", "Registry",
     "smss.exe", "csrss.exe", "wininit.exe",
@@ -126,9 +139,12 @@ for process in psutil.process_iter(["pid", "name"]):
 
 processes.sort(key=lambda x: x[0].lower())
 
+
+# State
 selected = "Overall"
 running = True
 old_connections = set()
+
 
 def load_processes(search=""):
     PList.clear()
@@ -140,6 +156,7 @@ def load_processes(search=""):
     for name, pid in processes:
         if not search or search in name.lower() or search in str(pid):
             PList.addItem(f"{name}  (PID: {pid})")
+
 
 def update_packets():
     if selected == "Overall":
@@ -155,6 +172,7 @@ def update_packets():
     for i, width in enumerate(column_widths):
         Packets.setColumnWidth(i, width)
 
+
 def select_process(item):
     global selected
 
@@ -164,12 +182,15 @@ def select_process(item):
         selected = "Overall"
         load_processes()
         PList.setCurrentRow(0)
+
     elif text == "Overall":
         selected = "Overall"
+
     else:
         selected = text
 
     update_packets()
+
 
 def search_processes():
     text, ok = QInputDialog.getText(
@@ -182,6 +203,7 @@ def search_processes():
         load_processes(text)
         PList.setCurrentRow(0)
 
+
 def packet_json(row):
     return json.dumps({
         "time": row[0],
@@ -193,6 +215,67 @@ def packet_json(row):
         "state": row[6]
     }, indent=4)
 
+
+# Create .log
+def create_log():
+    if selected == "Overall":
+        rows = model.rows
+        selection = "Overall"
+        pid = None
+    else:
+        pid = selected.split("(PID: ")[-1].rstrip(")")
+        rows = [row for row in model.rows if row[2] == pid]
+        selection = selected
+
+    path, _ = QFileDialog.getSaveFileName(
+        window,
+        "Create Log",
+        "NetNinja.log",
+        "Log Files (*.log)"
+    )
+
+    if not path:
+        return
+
+    try:
+        with open(path, "w", encoding="utf-8") as file:
+            file.write("NetNinja Log\n")
+            file.write("=" * 60 + "\n")
+            file.write(f"Selection: {selection}\n")
+
+            if pid:
+                file.write(f"PID: {pid}\n")
+
+            file.write(f"Packets: {len(rows)}\n")
+            file.write("=" * 60 + "\n\n")
+
+            for row in rows:
+                file.write(
+                    f"Time: {row[0]}\n"
+                    f"Process: {row[1]}\n"
+                    f"PID: {row[2]}\n"
+                    f"Protocol: {row[3]}\n"
+                    f"Local: {row[4]}\n"
+                    f"Remote: {row[5]}\n"
+                    f"State: {row[6]}\n"
+                    + "-" * 60 + "\n"
+                )
+
+        QMessageBox.information(
+            window,
+            "Log Created",
+            f"Log saved successfully:\n{path}"
+        )
+
+    except Exception as error:
+        QMessageBox.critical(
+            window,
+            "Log Error",
+            f"Could not create log:\n{error}"
+        )
+
+
+# Right-click Packet Menu
 def packet_menu(position):
     index = Packets.indexAt(position)
 
@@ -217,7 +300,7 @@ def packet_menu(position):
     copy = menu.addAction("Copy")
 
     menu.addSeparator()
-    cancel = menu.addAction("Cancel")
+    menu.addAction("Cancel")
 
     action = menu.exec(
         Packets.viewport().mapToGlobal(position)
@@ -245,6 +328,8 @@ def packet_menu(position):
     elif action == copy:
         QApplication.clipboard().setText(" | ".join(packet))
 
+
+# Monitor
 def monitor_connections():
     global old_connections
 
@@ -307,6 +392,8 @@ def monitor_connections():
 
     old_connections = current
 
+
+# Monitor Button
 def set_monitor_style():
     color = "green" if running else "red"
 
@@ -329,12 +416,15 @@ def set_monitor_style():
         }}
     """)
 
+
 def toggle_monitor():
     global running
 
     running = not running
     set_monitor_style()
 
+
+# Setup
 PList.setSpacing(4)
 PList.setUniformItemSizes(True)
 
@@ -343,20 +433,26 @@ load_processes()
 PList.itemClicked.connect(select_process)
 Search.clicked.connect(search_processes)
 Stop.clicked.connect(toggle_monitor)
+CreateLog.clicked.connect(create_log)
 
 Packets.setContextMenuPolicy(Qt.CustomContextMenu)
 Packets.customContextMenuRequested.connect(packet_menu)
 
 set_monitor_style()
 
+
+# Timer
 timer = QTimer()
 timer.timeout.connect(monitor_connections)
 timer.start(250)
 
+
+# Center
 screen = QApplication.primaryScreen()
 frame = window.frameGeometry()
 frame.moveCenter(screen.availableGeometry().center())
 window.move(frame.topLeft())
+
 
 window.show()
 sys.exit(app.exec())
