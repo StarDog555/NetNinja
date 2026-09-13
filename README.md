@@ -25,8 +25,6 @@ At Least **Python 3** or higher
 
 ---
 
-> **Note**: Run Theses commands In Project's Root Dir
-
 ## Installing From Zip
 
 Download the latest Zip from the **Releases** section
@@ -57,3 +55,5 @@ The compiled executable will be located at:
 ```text
 dist\NetNinja.exe
 ```
+
+> **Note**: Run Theses commands In Project's Root Dir
